@@ -19,19 +19,24 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'redTab',
             hidden: false,
         };
     }
 
     render() {
+
+        const { location: {
+            pathname
+        } } = this.props;
+
+
         return (
 
             <div className="home">
                 <Route path="/home/index" component={Index} />
                 <Route path="/home/rent" component={Rent} />
                 <Route path="/home/news" component={News} />
-                <Route path="/home/profile" component={Profile} />
+                <Route path="/home/my" component={Profile} />
 
                 <TabBar
                     unselectedTintColor="#949494"
@@ -44,26 +49,25 @@ export default class Home extends Component {
                         key="Life"
                         icon={<i className="iconfont icon-ind"></i>}
                         selectedIcon={<i className="iconfont icon-ind"></i>}
-                        selected={this.state.selectedTab === 'blueTab'}
+                        selected={pathname === '/home/index'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'blueTab',
-                            });
+
+                            this.props.history.push('/home/index')
+                            // this.setState({
+                            //     selectedTab: 'blueTab',
+                            // });
                         }}
                         data-seed="logId"
                     >
-                        {/* {this.renderContent('Life')} */}
                     </TabBar.Item>
                     <TabBar.Item
                         icon={<i className="iconfont icon-findHouse"></i>}
                         selectedIcon={<i className="iconfont icon-findHouse"></i>}
                         title="找房"
                         key="Koubei"
-                        selected={this.state.selectedTab === 'redTab'}
+                        selected={pathname === '/home/rent'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'redTab',
-                            });
+                            this.props.history.push('/home/rent')
                         }}
                         data-seed="logId1"
                     >
@@ -73,11 +77,9 @@ export default class Home extends Component {
                         selectedIcon={<i className="iconfont icon-infom"></i>}
                         title="资讯"
                         key="Friend"
-                        selected={this.state.selectedTab === 'greenTab'}
+                        selected={pathname === '/home/news'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'greenTab',
-                            });
+                            this.props.history.push('/home/news')
                         }}
                     >
                     </TabBar.Item>
@@ -86,14 +88,11 @@ export default class Home extends Component {
                         selectedIcon={<i className="iconfont icon-myinfo"></i>}
                         title="我的"
                         key="my"
-                        selected={this.state.selectedTab === 'yellowTab'}
+                        selected={pathname === '/home/my'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'yellowTab',
-                            });
+                            this.props.history.push('/home/my')
                         }}
                     >
-
                     </TabBar.Item>
                 </TabBar>
             </div>
