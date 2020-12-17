@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
 import { TabBar } from 'antd-mobile';
 
+import { Route } from 'react-router-dom';
+
+
+import './index.css';
+
+// 导入子页面
+// 小首页
+import Index from '../Index';
+// 找房
+import Rent from '../Rent';
+import News from '../News';
+import Profile from '../Profile';
+
 export default class Home extends Component {
 
     constructor(props) {
@@ -8,41 +21,18 @@ export default class Home extends Component {
         this.state = {
             selectedTab: 'redTab',
             hidden: false,
-            fullScreen: false,
         };
-    }
-
-    renderContent(pageText) {
-        return (
-            <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-                <div style={{ paddingTop: 60 }}>Clicked “{pageText}” tab， show “{pageText}” information</div>
-                <a style={{ display: 'block', marginTop: 40, marginBottom: 20, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            hidden: !this.state.hidden,
-                        });
-                    }}
-                >
-                    Click to show/hide tab-bar
-        </a>
-                <a style={{ display: 'block', marginBottom: 600, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            fullScreen: !this.state.fullScreen,
-                        });
-                    }}
-                >
-                    Click to switch fullscreen
-        </a>
-            </div>
-        );
     }
 
     render() {
         return (
-            <div style={this.state.fullScreen ? { position: 'fixed', height: '100%', width: '100%', top: 0 } : { height: 400 }}>
+
+            <div className="home">
+                <Route path="/home/index" component={Index} />
+                <Route path="/home/rent" component={Rent} />
+                <Route path="/home/news" component={News} />
+                <Route path="/home/profile" component={Profile} />
+
                 <TabBar
                     unselectedTintColor="#949494"
                     tintColor="#21b97a"
@@ -62,7 +52,7 @@ export default class Home extends Component {
                         }}
                         data-seed="logId"
                     >
-                        {this.renderContent('Life')}
+                        {/* {this.renderContent('Life')} */}
                     </TabBar.Item>
                     <TabBar.Item
                         icon={<i className="iconfont icon-findHouse"></i>}
@@ -77,7 +67,6 @@ export default class Home extends Component {
                         }}
                         data-seed="logId1"
                     >
-                        {this.renderContent('Koubei')}
                     </TabBar.Item>
                     <TabBar.Item
                         icon={<i className="iconfont icon-infom"></i>}
@@ -91,7 +80,6 @@ export default class Home extends Component {
                             });
                         }}
                     >
-                        {this.renderContent('Friend')}
                     </TabBar.Item>
                     <TabBar.Item
                         icon={<i className="iconfont icon-myinfo"></i>}
@@ -105,7 +93,7 @@ export default class Home extends Component {
                             });
                         }}
                     >
-                        {this.renderContent('My')}
+
                     </TabBar.Item>
                 </TabBar>
             </div>
