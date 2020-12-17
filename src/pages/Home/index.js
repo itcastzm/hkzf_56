@@ -14,21 +14,20 @@ import Rent from '../Rent';
 import News from '../News';
 import Profile from '../Profile';
 
-export default class Home extends Component {
+const navs = [
+    { title: '首页', icon: 'icon-ind', path: '/home/index' },
+    { title: '找房', icon: 'icon-findHouse', path: '/home/rent' },
+    { title: '资讯', icon: 'icon-infom', path: '/home/news' },
+    { title: '我的', icon: 'icon-myinfo', path: '/home/my' },
+];
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            hidden: false,
-        };
-    }
+export default class Home extends Component {
 
     render() {
 
         const { location: {
             pathname
         } } = this.props;
-
 
         return (
 
@@ -42,58 +41,22 @@ export default class Home extends Component {
                     unselectedTintColor="#949494"
                     tintColor="#21b97a"
                     barTintColor="white"
-                    hidden={this.state.hidden}
+                    noRenderContent
                 >
-                    <TabBar.Item
-                        title="首页"
-                        key="Life"
-                        icon={<i className="iconfont icon-ind"></i>}
-                        selectedIcon={<i className="iconfont icon-ind"></i>}
-                        selected={pathname === '/home/index'}
-                        onPress={() => {
+                    {navs.map(item => (
+                        <TabBar.Item
+                            icon={<i className={`iconfont ${item.icon}`}></i>}
+                            selectedIcon={<i className={`iconfont ${item.icon}`}></i>}
+                            title={item.title}
+                            key={item.path}
+                            selected={pathname === item.path}
+                            onPress={() => {
+                                this.props.history.push(item.path)
+                            }}
+                        >
+                        </TabBar.Item>
+                    ))}
 
-                            this.props.history.push('/home/index')
-                            // this.setState({
-                            //     selectedTab: 'blueTab',
-                            // });
-                        }}
-                        data-seed="logId"
-                    >
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={<i className="iconfont icon-findHouse"></i>}
-                        selectedIcon={<i className="iconfont icon-findHouse"></i>}
-                        title="找房"
-                        key="Koubei"
-                        selected={pathname === '/home/rent'}
-                        onPress={() => {
-                            this.props.history.push('/home/rent')
-                        }}
-                        data-seed="logId1"
-                    >
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={<i className="iconfont icon-infom"></i>}
-                        selectedIcon={<i className="iconfont icon-infom"></i>}
-                        title="资讯"
-                        key="Friend"
-                        selected={pathname === '/home/news'}
-                        onPress={() => {
-                            this.props.history.push('/home/news')
-                        }}
-                    >
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={<i className="iconfont icon-myinfo"></i>}
-                        selectedIcon={<i className="iconfont icon-myinfo"></i>}
-                        title="我的"
-                        key="my"
-                        selected={pathname === '/home/my'}
-                        onPress={() => {
-                            this.props.history.push('/home/my')
-                        }}
-                    >
-                    </TabBar.Item>
                 </TabBar>
             </div>
         );
