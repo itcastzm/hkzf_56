@@ -34,13 +34,30 @@ export default class Index extends Component {
     state = {
         swipers: [],
         groups: [],
-        news: []
+        news: [],
+        cityInfo: {}
     }
     componentDidMount() {
         // 请求轮播图数据
         this.getSwipersData();
         this.getGroups();
         this.getNewsData();
+
+
+        var myCity = new window.BMap.LocalCity();
+
+        myCity.get(async (result) => {
+
+            const res = await axios.get(`http://localhost:8080/area/info`, {
+                params: {
+                    name: result.name
+                }
+            })
+
+            this.setState({
+                cityInfo: res.data.body
+            })
+        });
     }
 
     async getSwipersData() {
@@ -138,7 +155,8 @@ export default class Index extends Component {
                     <Flex className="search-box">
                         <Flex className="search">
                             <div className="location">
-                                广州<i className="iconfont icon-arrow"></i>
+                                {this.state.cityInfo.label || '上海'}
+                                <i className="iconfont icon-arrow"></i>
                             </div>
                             <div className="form">
                                 <i className="iconfont icon-seach"></i>
@@ -189,7 +207,7 @@ export default class Index extends Component {
                     </h3>
                     <WingBlank size="md">
                         {this.state.news.map((item) => (
-                            <div className="news-item">
+                            <div className="news-item" key={item.id}>
                                 <div className="img-wrap">
                                     <img alt="" src={'http://localhost:8080' + item.imgSrc} />
                                 </div>
