@@ -8,6 +8,8 @@ import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home'
 import CityList from './pages/CityList';
 
+import MyMap from './pages/MyMap';
+
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -19,6 +21,7 @@ export default function App() {
                 <Route exact path="/" render={() => <Redirect to="/home" />} />
                 <Route path="/home" component={Home} />
                 <Route path="/citylist" component={CityList} />
+                <Route path="/map" component={MyMap} />
                 <Route path="*" component={NotFound} />
             </Switch>
         </HashRouter>

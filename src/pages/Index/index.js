@@ -16,6 +16,12 @@ import Nav4 from '../../assets/images/nav-4.png';
 import './index.css';
 
 
+const navs = [
+    { img: Nav1, title: '整租', 'path': '/home/rent' },
+    { img: Nav2, title: '合租', 'path': '/home/rent' },
+    { img: Nav3, title: '地图找房', 'path': '/map' },
+    { img: Nav4, title: '去出租', 'path': '/rent' },
+]
 
 export default class Index extends Component {
 
@@ -23,13 +29,6 @@ export default class Index extends Component {
         swipers: []
     }
     componentDidMount() {
-        // simulate img loading
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-
         // 请求轮播图数据
         this.getSwipersData()
     }
@@ -65,7 +64,6 @@ export default class Index extends Component {
                                 onLoad={() => {
                                     // fire window resize event to change height
                                     window.dispatchEvent(new Event('resize'));
-                                    this.setState({ imgHeight: 'auto' });
                                 }}
                             />
                         </a>
@@ -77,6 +75,19 @@ export default class Index extends Component {
         return null;
     }
 
+    // 导航区
+    renderNavs() {
+        return (
+            <Flex className="flex-nav">
+                { navs.map((item, i) => (
+                    <Flex.Item key={i} onClick={() => this.props.history.push(item.path)}>
+                        <img src={item.img} alt="nav" />
+                        <h3>{item.title}</h3>
+                    </Flex.Item>
+                ))}
+            </Flex>
+        )
+    }
 
     render() {
         return (
@@ -89,24 +100,7 @@ export default class Index extends Component {
 
                 {/* 导航区 */}
                 <div className="navs">
-                    <Flex className="flex-nav">
-                        <Flex.Item>
-                            <img src={Nav1} alt="nav" />
-                            <h3>整租</h3>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <img src={Nav2} alt="nav" />
-                            <h3>合租</h3>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <img src={Nav3} alt="nav" />
-                            <h3>地图找房</h3>
-                        </Flex.Item>
-                        <Flex.Item>
-                            <img src={Nav4} alt="nav" />
-                            <h3>去出租</h3>
-                        </Flex.Item>
-                    </Flex>
+                    {this.renderNavs()}
                 </div>
 
             </div>
