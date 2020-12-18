@@ -84,4 +84,48 @@
             }
         }
     }
+
+
+    // 最新资讯
+    .news {
+        background-color: #fff;
+
+        .group-title {
+            padding: 10px 5px 10px 10px;
+            font-size: 15px;
+        }
+
+        .news-item {
+            height: 120px;
+        }
+
+        .img-wrap {
+            height: 90px;
+            width: 120px;
+            float: left;
+
+            img {
+                width: 120px;
+                height: 90;
+            }
+        }
+
+        .content {
+            height: 100%;
+            overflow: hidden;
+
+            padding: 0px 0px 20px 10px;
+
+            .title {
+                width: 100%;
+                text-align: left;
+                font-size: 15px;
+                font-weight: 600;
+            }
+
+            .desc {
+                width: 100%;
+            }
+        }
+    }
 }
