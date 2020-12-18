@@ -19,7 +19,6 @@ export default function App() {
                 <Route exact path="/" render={() => <Redirect to="/home" />} />
                 <Route path="/home" component={Home} />
                 <Route path="/citylist" component={CityList} />
-
                 <Route path="*" component={NotFound} />
             </Switch>
         </HashRouter>

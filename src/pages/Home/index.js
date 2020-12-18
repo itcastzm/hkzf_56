@@ -25,13 +25,15 @@ export default class Home extends Component {
 
     render() {
 
+        // location  history  match
         const { location: {
             pathname
         } } = this.props;
 
         return (
-
+            // 推荐在每一个  页面级 或者功能组件 最外层设定一个 包裹 样式类
             <div className="home">
+
                 <Route exact path="/home" component={Index} />
                 <Route path="/home/rent" component={Rent} />
                 <Route path="/home/news" component={News} />
@@ -53,7 +55,6 @@ export default class Home extends Component {
                             onPress={() => this.props.history.push(item.path)}
                         />
                     ))}
-
                 </TabBar>
             </div>
         );
