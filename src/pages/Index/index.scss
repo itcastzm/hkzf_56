@@ -1,0 +1,26 @@
+.index-wrapper {
+    .swiper-area {
+        height: 212px;
+    }
+
+    .navs {
+        padding: 10px 0;
+        background-color: #fff;
+
+        .flex-nav {
+            text-align: center;
+
+            img {
+                width: 48px;
+            }
+
+            h3 {
+                margin-top: 7px;
+                font-size: 13px;
+                font-weight: normal;
+            }
+
+        }
+
+    }
+}
