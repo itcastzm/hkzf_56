@@ -3,11 +3,14 @@ import React, { Component } from 'react'
 // 导入轮播图组件
 import { Carousel, WingBlank } from 'antd-mobile';
 
+// 引入axios 
+import axios from 'axios';
+
 
 export default class Index extends Component {
 
     state = {
-        data: ['1', '2', '3'],
+        swipers: []
     }
     componentDidMount() {
         // simulate img loading
@@ -16,27 +19,38 @@ export default class Index extends Component {
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
+
+        // 请求轮播图数据
+        this.getSwipersData()
+    }
+
+    async getSwipersData() {
+        const res = await axios.get(`http://localhost:8080/home/swiper`);
+
+        this.setState({
+            swipers: res.data.body
+        });
     }
 
 
     render() {
         return (
             <div>
-                <Carousel
+
+
+                {this.state.swipers.length ? <Carousel
                     autoplay={true}
                     autoplayInterval={1000}
                     infinite
-                // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                // afterChange={index => console.log('slide to', index)}
                 >
-                    {this.state.data.map(val => (
+                    {this.state.swipers.map(val => (
                         <a
-                            key={val}
+                            key={val.id}
                             href="http://itcast.cn/"
                             style={{ display: 'inline-block', width: '100%', height: 212 }}
                         >
                             <img
-                                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                                src={`http://localhost:8080${val.imgSrc}`}
                                 alt=""
                                 style={{ width: '100%', verticalAlign: 'top' }}
                                 onLoad={() => {
@@ -47,7 +61,8 @@ export default class Index extends Component {
                             />
                         </a>
                     ))}
-                </Carousel>
+                </Carousel> : null}
+
             </div>
         )
     }
