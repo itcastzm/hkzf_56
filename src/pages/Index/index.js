@@ -132,6 +132,22 @@ export default class Index extends Component {
                 {/* 轮播图区域 */}
                 <div className="swiper-area">
                     {this.renderSwipers()}
+
+                    {/* 搜索框 */}
+
+                    <Flex className="search-box">
+                        <Flex className="search">
+                            <div className="location">
+                                广州<i className="iconfont icon-arrow"></i>
+                            </div>
+                            <div className="form">
+                                <i className="iconfont icon-seach"></i>
+                                <span>请输入小区或地址</span>
+                            </div>
+                        </Flex>
+                        <i className="iconfont icon-map"></i>
+                    </Flex>
+
                 </div>
 
                 {/* 导航区 */}
@@ -171,7 +187,7 @@ export default class Index extends Component {
                     <h3 className="group-title">
                         最新资讯
                     </h3>
-                    <WingBlank>
+                    <WingBlank size="md">
                         {this.state.news.map((item) => (
                             <div className="news-item">
                                 <div className="img-wrap">
