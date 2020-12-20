@@ -4,6 +4,8 @@ import { NavBar } from 'antd-mobile';
 
 import axios from 'axios';
 
+import { getCurrentCityInfo } from '../../utils';
+
 // 引入样式文件
 import './index.scss';
 
@@ -43,6 +45,20 @@ export default class CityList extends Component {
 
         // 将请求到的数据  处理成可以渲染的结构
         const { cityIndex, cityObj } = formatCityListData(res.data.body);
+
+        // 获取热门城市数据
+        const hotRes = await axios.get(`http://localhost:8080/area/hot`);
+
+        // 处理热门城市数据
+        cityIndex.unshift('hot');
+        cityObj.hot = hotRes.data.body;
+
+        // 处理当前定位城市数据
+        const curCityInfo = await getCurrentCityInfo();
+
+        cityIndex.unshift('#');
+        cityObj['#'] = [curCityInfo];
+
 
         console.log(cityIndex, cityObj);
     }
