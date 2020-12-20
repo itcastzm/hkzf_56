@@ -63,7 +63,8 @@ export default class CityList extends Component {
 
     state = {
         cityIndex: [],
-        cityObj: {}
+        cityObj: {},
+        curIndex: 0
     }
 
     componentDidMount() {
@@ -137,6 +138,21 @@ export default class CityList extends Component {
         );
     }
 
+    renderCityIndex() {
+
+        let { curIndex } = this.state;
+
+        return this.state.cityIndex.map((le, i) => {
+            let clsStr = `${curIndex === i ? 'index-active' : ' '}`;
+
+            return (
+                <li key={i} className="city-index-item">
+                    <span className={clsStr}>{le === 'hot' ? '热' : le.toUpperCase()}</span>
+                </li>
+            );
+        });
+    }
+
     render() {
         return (
             <div className="citylist-wrapper">
@@ -160,6 +176,19 @@ export default class CityList extends Component {
                         )
                     }
                 </AutoSizer>
+
+                {/* 右侧索引列表 */}
+                {/* 
+                    1 封装 renderCityIndex 方法，用来渲染城市索引列表。
+                    2 在方法中，获取到索引数组 cityIndex ，遍历 cityIndex ，渲染索引列表。
+                    3 将索引 hot 替换为 热。
+                    4 在 state 中添加状态 activeIndex ，指定当前高亮的索引。
+                    5 在遍历 cityIndex 时，添加当前字母索引是否高亮的判断条件。
+                    */}
+                <ul className="city-index">
+                    {this.renderCityIndex()}
+                </ul>
+
             </div>
         )
     }
