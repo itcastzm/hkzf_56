@@ -14,35 +14,23 @@ import { getCurrentCityInfo } from '../../utils';
 // 引入样式文件
 import './index.scss';
 
-// List data as an array of strings
-const list = [
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    // And so on...
-];
 
-function rowRenderer({
-    key, // Unique key within array of rows
-    index, // Index of row within collection
-    isScrolling, // The List is currently being scrolled
-    isVisible, // This row is visible within the List (eg it is not an overscanned row)
-    style, // Style object to be applied to row (to position it)
-}) {
-    return (
-        <div key={key} style={style}>
-            {list[index]}
-        </div>
-    );
-}
+
+
+
+/*
+  1 将获取到的 cityObj 和 cityIndex  添加为组件的状态数据。
+  2 修改 List 组件的 rowCount 为 cityIndex 的长度。
+  3 将 rowRenderer 函数，添加到组件中，以便在函数中获取到状态数据 cityObj 和 cityIndex。
+  4 修改 List 组件的 rowRenderer 为组件中的 rowRenderer 方法。
+  5 修改 rowRenderer 方法中渲染的每行结构和样式。
+  6 修改 List 组件的 rowHeight 为函数，动态计算每一行的高度（因为每一行高度都不相同）。
+
+  <div key={key} style={style} className="city">
+    <div className="title">S</div>
+    <div className="name">上海</div>
+  </div>
+*/
 
 
 function formatCityListData(list) {
@@ -68,6 +56,9 @@ function formatCityListData(list) {
 
 }
 
+
+const titleHeight = 36;
+const nameHeight = 50;
 export default class CityList extends Component {
 
     state = {
@@ -105,6 +96,47 @@ export default class CityList extends Component {
         })
     }
 
+
+    getRowHeight = ({ index }) => {
+        let { cityIndex, cityObj } = this.state;
+        let letter = cityIndex[index];
+        let list = cityObj[letter];
+        return titleHeight + nameHeight * list.length;
+    }
+
+    rowRenderer = ({
+        key, // Unique key within array of rows
+        index, // Index of row within collection
+        isScrolling, // The List is currently being scrolled
+        isVisible, // This row is visible within the List (eg it is not an overscanned row)
+        style, // Style object to be applied to row (to position it)
+    }) => {
+        let { cityIndex, cityObj } = this.state;
+        let letter = cityIndex[index];
+        let list = cityObj[letter];
+        let label = '';
+
+        switch (letter) {
+            case '#':
+                label = '当前定位';
+                break;
+            case 'hot':
+                label = '热门城市';
+                break;
+            default:
+                label = letter.toUpperCase();
+        }
+
+        return (
+            <div key={key} style={style} className="city">
+                <div className="title">{label}</div>
+                {list.map((item) => (
+                    <div className="name" key={item.value}>{item.label}</div>
+                ))}
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="citylist-wrapper">
@@ -121,9 +153,9 @@ export default class CityList extends Component {
                             <List
                                 width={width}
                                 height={height}
-                                rowCount={list.length}
-                                rowHeight={50}
-                                rowRenderer={rowRenderer}
+                                rowCount={this.state.cityIndex.length}
+                                rowHeight={this.getRowHeight}
+                                rowRenderer={this.rowRenderer}
                             />
                         )
                     }
