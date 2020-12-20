@@ -6,7 +6,7 @@ import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 // 引入axios 
 import axios from 'axios';
 
-// 导入图片
+// 导入图片  格式是Base64格式 能够减少tcp请求
 import Nav1 from '../../assets/images/nav-1.png';
 import Nav2 from '../../assets/images/nav-2.png';
 import Nav3 from '../../assets/images/nav-3.png';
@@ -96,6 +96,7 @@ export default class Index extends Component {
     // 渲染轮播图
     renderSwipers() {
 
+        // 判断是否显示轮播图组件  主要目的 避免轮播图图片不切换的问题
         if (this.state.swipers.length) {
             return (
                 <Carousel
@@ -148,13 +149,13 @@ export default class Index extends Component {
 
                 {/* 轮播图区域 */}
                 <div className="swiper-area">
+
                     {this.renderSwipers()}
 
                     {/* 搜索框 */}
-
                     <Flex className="search-box">
                         <Flex className="search">
-                            <div className="location">
+                            <div className="location" onClick={() => this.props.history.push('/citylist')}>
                                 {this.state.cityInfo.label || '上海'}
                                 <i className="iconfont icon-arrow"></i>
                             </div>
