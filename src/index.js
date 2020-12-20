@@ -6,6 +6,8 @@ import ReactDOM from 'react-dom';
 
 // 引入图标文件
 import './assets/fonts/iconfont.css';
+// 导入react - virtualized样式
+import 'react-virtualized/styles.css';
 
 import './index.css';
 

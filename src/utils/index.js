@@ -14,10 +14,9 @@ function getCurrentCityInfo() {
             // 判断缓存中有当前定位信息没有
             if (curCityInfo) {
                 // 有
-                resolve(curCityInfo)
+                resolve(curCityInfo);
             } else {
                 // 没有
-
                 var myCity = new window.BMap.LocalCity();
 
                 myCity.get(async (result) => {

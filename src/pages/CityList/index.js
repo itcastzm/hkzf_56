@@ -4,10 +4,45 @@ import { NavBar } from 'antd-mobile';
 
 import axios from 'axios';
 
+// 引入List组件
+// https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
+// https://github.com/bvaughn/react-virtualized
+import { List } from 'react-virtualized';
+
 import { getCurrentCityInfo } from '../../utils';
 
 // 引入样式文件
 import './index.scss';
+
+// List data as an array of strings
+const list = [
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    'Brian Vaughn',
+    // And so on...
+];
+
+function rowRenderer({
+    key, // Unique key within array of rows
+    index, // Index of row within collection
+    isScrolling, // The List is currently being scrolled
+    isVisible, // This row is visible within the List (eg it is not an overscanned row)
+    style, // Style object to be applied to row (to position it)
+}) {
+    return (
+        <div key={key} style={style}>
+            {list[index]}
+        </div>
+    );
+}
 
 
 function formatCityListData(list) {
@@ -35,6 +70,11 @@ function formatCityListData(list) {
 
 export default class CityList extends Component {
 
+    state = {
+        cityIndex: [],
+        cityObj: {}
+    }
+
     componentDidMount() {
         this.getCityListData();
     }
@@ -59,8 +99,10 @@ export default class CityList extends Component {
         cityIndex.unshift('#');
         cityObj['#'] = [curCityInfo];
 
-
-        console.log(cityIndex, cityObj);
+        this.setState({
+            cityIndex,
+            cityObj
+        })
     }
 
     render() {
@@ -71,6 +113,15 @@ export default class CityList extends Component {
                     icon={<i className="iconfont icon-back"></i>}
                     onLeftClick={() => this.props.history.go(-1)}
                 >城市选择</NavBar>
+
+
+                <List
+                    width={300}
+                    height={300}
+                    rowCount={list.length}
+                    rowHeight={20}
+                    rowRenderer={rowRenderer}
+                />
             </div>
         )
     }
