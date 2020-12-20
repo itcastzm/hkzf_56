@@ -7,7 +7,7 @@ import axios from 'axios';
 // 引入List组件
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
 // https://github.com/bvaughn/react-virtualized
-import { List } from 'react-virtualized';
+import { List, AutoSizer } from 'react-virtualized';
 
 import { getCurrentCityInfo } from '../../utils';
 
@@ -114,14 +114,20 @@ export default class CityList extends Component {
                     onLeftClick={() => this.props.history.go(-1)}
                 >城市选择</NavBar>
 
-
-                <List
-                    width={300}
-                    height={300}
-                    rowCount={list.length}
-                    rowHeight={20}
-                    rowRenderer={rowRenderer}
-                />
+                {/* AutoSizer 用来设定 宽度和高度 */}
+                <AutoSizer>
+                    {
+                        ({ height, width }) => (
+                            <List
+                                width={width}
+                                height={height}
+                                rowCount={list.length}
+                                rowHeight={50}
+                                rowRenderer={rowRenderer}
+                            />
+                        )
+                    }
+                </AutoSizer>
             </div>
         )
     }
