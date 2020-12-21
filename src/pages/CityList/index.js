@@ -4,6 +4,8 @@ import { NavBar, Toast } from 'antd-mobile';
 
 import axios from 'axios';
 
+import NavHeader from '../../components/NavHeader'
+
 // 引入List组件
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
 // https://github.com/bvaughn/react-virtualized
@@ -227,11 +229,12 @@ export default class CityList extends Component {
 
         return (
             <div className="citylist-wrapper">
-                <NavBar
+                {/* <NavBar
                     mode="light"
                     icon={<i className="iconfont icon-back"></i>}
                     onLeftClick={() => this.props.history.go(-1)}
-                >城市选择</NavBar>
+                >城市选择</NavBar> */}
+                <NavHeader>城市选择</NavHeader>
 
                 {/* AutoSizer 用来设定 宽度和高度 */}
                 <AutoSizer>

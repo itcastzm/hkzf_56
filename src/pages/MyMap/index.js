@@ -18,7 +18,7 @@ export default class MyMap extends Component {
     render() {
         return (
             <div className="map">
-                <NavHeader title="地图找房"></NavHeader>
+                <NavHeader >地图找房</NavHeader>
                 <div id="container"></div>
             </div>
         )
