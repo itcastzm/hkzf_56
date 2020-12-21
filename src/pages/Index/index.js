@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 // 导入轮播图组件
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 
+
+import { getCurrentCityInfo } from '../../utils'
+
 // 引入axios 
 import axios from 'axios';
 
@@ -44,19 +47,29 @@ export default class Index extends Component {
         this.getNewsData();
 
 
-        var myCity = new window.BMap.LocalCity();
+        this.getCityInfo();
 
-        myCity.get(async (result) => {
 
-            const res = await axios.get(`http://localhost:8080/area/info`, {
-                params: {
-                    name: result.name
-                }
-            })
+        // var myCity = new window.BMap.LocalCity();
 
-            this.setState({
-                cityInfo: res.data.body
-            })
+        // myCity.get(async (result) => {
+
+        //     const res = await axios.get(`http://localhost:8080/area/info`, {
+        //         params: {
+        //             name: result.name
+        //         }
+        //     })
+
+        //     this.setState({
+        //         cityInfo: res.data.body
+        //     })
+        // });
+    }
+
+    async getCityInfo() {
+        const cityInfo = await getCurrentCityInfo();
+        this.setState({
+            cityInfo
         });
     }
 

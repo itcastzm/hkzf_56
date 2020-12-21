@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // 引入antd-mobile 组件
-import { NavBar } from 'antd-mobile';
+import { NavBar, Toast } from 'antd-mobile';
 
 import axios from 'axios';
 
@@ -52,7 +52,7 @@ function formatCityListData(list) {
 
 }
 
-
+const hotCities = ['北京', '上海', '广州', '深圳'];
 const titleHeight = 36;
 const nameHeight = 50;
 export default class CityList extends Component {
@@ -145,7 +145,7 @@ export default class CityList extends Component {
             <div key={key} style={style} className="city">
                 <div className="title">{label}</div>
                 {list.map((item) => (
-                    <div className="name" key={item.value}>{item.label}</div>
+                    <div className="name" onClick={this.changeCity.bind(this, item)} key={item.value}>{item.label}</div>
                 ))}
             </div>
         );
@@ -185,6 +185,18 @@ export default class CityList extends Component {
         // scrollToRow
         // this.scrollToRow();
         this.listRef.current.scrollToRow(index);
+    }
+
+    //切换城市
+    changeCity(cityInfo) {
+        if (hotCities.indexOf(cityInfo.label) > -1) {
+            //切换城市
+            localStorage.setItem('hkzf_city_56', JSON.stringify(cityInfo));
+            this.props.history.go(-1);
+        } else {
+            //该城市暂无房源数据
+            Toast.info(`该城市暂无房源数据`, 1, null, true);
+        }
     }
 
     render() {
