@@ -57,6 +57,20 @@ const titleHeight = 36;
 const nameHeight = 50;
 export default class CityList extends Component {
 
+    // constructor() {
+    //     super();
+    //     this.listRef = React.createRef();
+
+    //     this.state = {
+    //         cityIndex: [],
+    //         cityObj: {},
+    //         curIndex: 0
+    //     }
+    // }
+
+    // 创建非受控  ref 应用
+    listRef = React.createRef();
+
     state = {
         cityIndex: [],
         cityObj: {},
@@ -90,6 +104,9 @@ export default class CityList extends Component {
         this.setState({
             cityIndex,
             cityObj
+        }, () => {
+            // 解决未加载行 跳转不精确问题
+            this.listRef.current.measureAllRows();
         })
     }
 
@@ -142,14 +159,17 @@ export default class CityList extends Component {
             let clsStr = `${curIndex === i ? 'index-active' : ' '}`;
 
             return (
-                <li key={i} className="city-index-item">
+                <li key={i} className="city-index-item" onClick={this.scrollTo.bind(this, i)}>
                     <span className={clsStr}>{le === 'hot' ? '热' : le.toUpperCase()}</span>
                 </li>
             );
         });
     }
 
-    onRowsRendered = ({ startIndex }) => {
+    onRowsRendered = ({ startIndex, stopIndex, overscanStartIndex, overscanStopIndex }) => {
+
+        // console.log('startIndex, stopIndex, overscanStartIndex, overscanStopIndex',
+        //     startIndex, stopIndex, overscanStartIndex, overscanStopIndex)
 
         const { curIndex } = this.state;
 
@@ -158,6 +178,13 @@ export default class CityList extends Component {
                 curIndex: startIndex
             });
         }
+    }
+
+    scrollTo(index) {
+        // console.log('index', index, this.listRef.current);
+        // scrollToRow
+        // this.scrollToRow();
+        this.listRef.current.scrollToRow(index);
     }
 
     render() {
@@ -181,6 +208,9 @@ export default class CityList extends Component {
                                 rowHeight={this.getRowHeight}
                                 rowRenderer={this.rowRenderer}
                                 onRowsRendered={this.onRowsRendered}
+                                ref={this.listRef}
+                                // 为了提高跳转精确
+                                scrollToAlignment="start"
                             />
                         )
                     }
