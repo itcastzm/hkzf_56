@@ -1,0 +1,14 @@
+.map {
+    height: 100%;
+    padding-top: 45px;
+
+    :global(.am-navbar) {
+        margin-top: -45px;
+    }
+}
+
+/* 全局样式名选择  :global  */
+// .map 
+.container {
+    height: 100%;
+}

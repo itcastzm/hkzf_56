@@ -4,7 +4,10 @@ import NavHeader from '../../components/NavHeader';
 // Set  
 // Map 
 
-import './index.scss';
+// import './index.scss';
+
+// css moudle 样式文件加载是通过webpack  css loader 插件处理的
+import styles from './index.module.scss';
 
 export default class MyMap extends Component {
 
@@ -17,9 +20,9 @@ export default class MyMap extends Component {
 
     render() {
         return (
-            <div className="map">
+            <div className={styles.map}>
                 <NavHeader >地图找房</NavHeader>
-                <div id="container"></div>
+                <div id="container" className={styles.container} ></div>
             </div>
         )
     }

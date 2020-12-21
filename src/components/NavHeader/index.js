@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavBar } from 'antd-mobile';
+// 路由的高阶组件
 import { withRouter } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
