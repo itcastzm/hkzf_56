@@ -14,10 +14,6 @@ import { getCurrentCityInfo } from '../../utils';
 // 引入样式文件
 import './index.scss';
 
-
-
-
-
 /*
   1 将获取到的 cityObj 和 cityIndex  添加为组件的状态数据。
   2 修改 List 组件的 rowCount 为 cityIndex 的长度。
@@ -153,7 +149,19 @@ export default class CityList extends Component {
         });
     }
 
+    onRowsRendered = ({ startIndex }) => {
+
+        const { curIndex } = this.state;
+
+        if (curIndex !== startIndex) {
+            this.setState({
+                curIndex: startIndex
+            });
+        }
+    }
+
     render() {
+
         return (
             <div className="citylist-wrapper">
                 <NavBar
@@ -172,6 +180,7 @@ export default class CityList extends Component {
                                 rowCount={this.state.cityIndex.length}
                                 rowHeight={this.getRowHeight}
                                 rowRenderer={this.rowRenderer}
+                                onRowsRendered={this.onRowsRendered}
                             />
                         )
                     }
