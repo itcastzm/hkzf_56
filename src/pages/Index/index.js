@@ -45,8 +45,6 @@ export default class Index extends Component {
         this.getSwipersData();
         this.getGroups();
         this.getNewsData();
-
-
         this.getCityInfo();
 
 
@@ -177,7 +175,7 @@ export default class Index extends Component {
                                 <span>请输入小区或地址</span>
                             </div>
                         </Flex>
-                        <i className="iconfont icon-map"></i>
+                        <i className="iconfont icon-map" onClick={() => this.props.history.push('/map')}></i>
                     </Flex>
 
                 </div>

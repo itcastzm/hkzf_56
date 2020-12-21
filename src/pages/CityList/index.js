@@ -70,6 +70,7 @@ export default class CityList extends Component {
 
     // 创建非受控  ref 应用
     listRef = React.createRef();
+    manulScrollCount = 0;
 
     state = {
         cityIndex: [],
@@ -173,7 +174,29 @@ export default class CityList extends Component {
 
         const { curIndex } = this.state;
 
-        if (curIndex !== startIndex) {
+        // 只会在手动滚动时 走这个
+        if (this.isMScrolling && overscanStartIndex === 0) {
+
+            this.manulScrollCount = this.manulScrollCoun + 1;
+
+            let isOdd = this.manulScrollCount % 2 === 1;
+
+            if (curIndex !== startIndex && isOdd) {
+
+                this.setState({
+                    curIndex: startIndex
+                });
+
+            } else {
+                // scrollTo   第二次触发  onRowsRendered  isOdd false
+                this.isMScrolling = false;
+            }
+        } else {
+            this.isMScrolling = false;
+        }
+
+        // 正常滚动走这个
+        if (curIndex !== startIndex && !this.isMScrolling) {
             this.setState({
                 curIndex: startIndex
             });
@@ -184,6 +207,7 @@ export default class CityList extends Component {
         // console.log('index', index, this.listRef.current);
         // scrollToRow
         // this.scrollToRow();
+        this.isMScrolling = true;
         this.listRef.current.scrollToRow(index);
     }
 
