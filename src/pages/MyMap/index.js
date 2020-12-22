@@ -31,6 +31,31 @@ export default class MyMap extends Component {
                 // 添加比例尺
                 map.addControl(new window.BMap.ScaleControl());
 
+
+                var opts = {
+                    position: point, // 指定文本标注所在的地理位置
+                    offset: new window.BMap.Size(30, -30) // 设置文本偏移量
+                };
+                // 创建文本标注对象
+                var label = new window.BMap.Label('你好', opts);
+                // 自定义文本标注样式
+                label.setStyle({
+                    color: 'red',
+                    borderRadius: '5px',
+                    borderColor: '#ccc',
+                    padding: '10px',
+                    fontSize: '16px',
+                    height: '30px',
+                    lineHeight: '30px',
+                    fontFamily: '微软雅黑'
+                });
+
+
+                map.addOverlay(label);
+
+
+
+
             }
         }, cityInfo.label);
 
