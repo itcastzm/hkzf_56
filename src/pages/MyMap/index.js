@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import NavHeader from '../../components/NavHeader';
-import { getCurrentCityInfo } from '../../utils'
+import { getCurrentCityInfo } from '../../utils';
+
+import axios from 'axios';
 
 // Set  
 // Map 
@@ -10,9 +12,24 @@ import { getCurrentCityInfo } from '../../utils'
 // css moudle 样式文件加载是通过webpack  css loader 插件处理的
 import styles from './index.module.scss';
 
+const labelStyle = {
+    cursor: 'pointer',
+    border: '0px solid rgb(255,0,0)',
+    padding: '0px',
+    whiteSpace: 'nowrap',
+    fontSize: '12px',
+    color: 'rbg(255,255,255)',
+    textAlign: 'center'
+};
+
 export default class MyMap extends Component {
 
-    async componentDidMount() {
+    componentDidMount() {
+
+        this.initMap();
+    }
+
+    async initMap() {
         // 1. 让地图展示当前城市
         const cityInfo = await getCurrentCityInfo();
 
@@ -20,7 +37,7 @@ export default class MyMap extends Component {
         // 创建地址解析器实例     
         var myGeo = new window.BMap.Geocoder();
         // 将地址解析结果显示在地图上，并调整地图视野    
-        myGeo.getPoint(cityInfo.label, function (point) {
+        myGeo.getPoint(cityInfo.label, async (point) => {
 
             if (point) {
                 // 2. 设置地图的缩放级别为11
@@ -31,41 +48,34 @@ export default class MyMap extends Component {
                 // 添加比例尺
                 map.addControl(new window.BMap.ScaleControl());
 
-
-                var opts = {
-                    position: point, // 指定文本标注所在的地理位置
-                    offset: new window.BMap.Size(30, -30) // 设置文本偏移量
-                };
-                // 创建文本标注对象
-                var label = new window.BMap.Label('', opts);
-                // 自定义文本标注样式
-                label.setStyle({
-                    cursor: 'pointer',
-                    border: '0px solid rgb(255,0,0)',
-                    padding: '0px',
-                    whiteSpace: 'nowrap',
-                    fontSize: '12px',
-                    color: 'rbg(255,255,255)',
-                    textAlign: 'center'
+                //获取当前城市下的房源数据
+                const res = await axios.get(`http://localhost:8080/area/map`, {
+                    params: {
+                        id: cityInfo.value
+                    }
                 });
 
-                label.setContent(`
+                res.data.body.forEach((v, i, a) => {
+
+                    var opts = {
+                        position: new window.BMap.Point(v.coord.longitude, v.coord.latitude), // 指定文本标注所在的地理位置
+                        offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+                    };
+                    // 创建文本标注对象
+                    var label = new window.BMap.Label('', opts);
+                    // 自定义文本标注样式
+                    label.setStyle(labelStyle);
+
+                    label.setContent(`
                     <div  class="${styles.bubble}">
-                        <p class="${styles.name}">番禺</p>
-                        <p >120套</p>
+                        <p class="${styles.name}">${v.label}</p>
+                        <p >${v.count}套</p>
                     </div>
                 `)
-                map.addOverlay(label);
-
-
-
-
+                    map.addOverlay(label);
+                });
             }
         }, cityInfo.label);
-
-
-
-
     }
 
 
