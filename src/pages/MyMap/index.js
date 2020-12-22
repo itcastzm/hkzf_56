@@ -34,6 +34,8 @@ export default class MyMap extends Component {
         const cityInfo = await getCurrentCityInfo();
 
         var map = new window.BMap.Map("container");
+        //将map实例存储在this上
+        this.map = map;
         // 创建地址解析器实例     
         var myGeo = new window.BMap.Geocoder();
         // 将地址解析结果显示在地图上，并调整地图视野    
@@ -48,37 +50,60 @@ export default class MyMap extends Component {
                 // 添加比例尺
                 map.addControl(new window.BMap.ScaleControl());
 
-                //获取当前城市下的房源数据
-                const res = await axios.get(`http://localhost:8080/area/map`, {
-                    params: {
-                        id: cityInfo.value
-                    }
-                });
+                // 调用渲染函数  发请求  遍历数据 渲染覆盖物
+                this.renderOverlays(cityInfo.value);
 
-                res.data.body.forEach((v, i, a) => {
-
-                    var opts = {
-                        position: new window.BMap.Point(v.coord.longitude, v.coord.latitude), // 指定文本标注所在的地理位置
-                        offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
-                    };
-                    // 创建文本标注对象
-                    var label = new window.BMap.Label('', opts);
-                    // 自定义文本标注样式
-                    label.setStyle(labelStyle);
-
-                    label.setContent(`
-                    <div  class="${styles.bubble}">
-                        <p class="${styles.name}">${v.label}</p>
-                        <p >${v.count}套</p>
-                    </div>
-                `)
-                    map.addOverlay(label);
-                });
             }
         }, cityInfo.label);
     }
 
+    // 发请求  遍历数据 渲染覆盖物
+    renderOverlays(id) {
 
+        //获取当前城市下的房源数据
+        const res = await axios.get(`http://localhost:8080/area/map`, {
+            params: {
+                id: id
+            }
+        });
+
+        res.data.body.forEach((v, i, a) => {
+
+            this.createOverlays(v.coord.longitude, v.coord.latitude, v.count, v.label);
+        });
+
+    }
+
+
+    // 渲染覆盖物
+    createOverlays(longitude, latitude, count, name) {
+
+        var opts = {
+            position: new window.BMap.Point(longitude, latitude), // 指定文本标注所在的地理位置
+            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+        };
+        // 创建文本标注对象
+        var label = new window.BMap.Label('', opts);
+        // 自定义文本标注样式
+        label.setStyle(labelStyle);
+
+        label.setContent(`
+                    <div  class="${styles.bubble}">
+                        <p class="${styles.name}">${name}</p>
+                        <p >${count}套</p>
+                    </div>
+                `)
+        this.map.addOverlay(label);
+    }
+
+    // 渲染圆形覆盖物
+    createCircle() {
+
+    }
+    // 渲染方形覆盖物
+    createReact() {
+
+    }
     render() {
         return (
             // BEM 文件名   样式类名   哈希值
