@@ -135,9 +135,9 @@ export default class MyMap extends Component {
         label.addEventListener('click', () => {
 
             // 1. 放大
-            this.map.panTo(point);
             // 2. 把被点击的地方 移动地图中心位置
             this.map.setZoom(nextZoom);
+            this.map.panTo(point);
 
             // this.map.centerAndZoom(point, nextZoom);
 
@@ -145,15 +145,38 @@ export default class MyMap extends Component {
             // 解决百度地图bug
             setTimeout(() => {
                 this.map.clearOverlays();
-            }, 0)
+            }, 0);
+
             // 4. 加载新的覆盖物
             this.renderOverlays(id);
-            console.log('被点击了!')
+            // console.log('被点击了!')
         })
     }
     // 渲染方形覆盖物
-    createReact() {
+    createReact(id, longitude, latitude, count, name) {
+        const point = new window.BMap.Point(longitude, latitude);
+        const opts = {
+            position: point, // 指定文本标注所在的地理位置
+            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+        };
+        // 创建文本标注对象
+        const label = new window.BMap.Label('', opts);
+        // 自定义文本标注样式
+        label.setStyle(labelStyle);
 
+        label.setContent(`
+                    <div  class="${styles.rect}">
+                        <span class="${styles.houseName}">${name}</span>
+                        <span class="${styles.houseNum}" >${count}套</span>
+                        <i class="${styles.arrow}"></i>
+                    </div>
+                `)
+        this.map.addOverlay(label);
+
+        label.addEventListener('click', () => {
+
+
+        });
     }
     render() {
         return (
