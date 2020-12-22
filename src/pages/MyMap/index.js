@@ -36,7 +36,7 @@ export default class MyMap extends Component {
         var map = new window.BMap.Map("container");
         //将map实例存储在this上
         this.map = map;
-        // 创建地址解析器实例     
+        // 创建地址解析器实例     Leo  Lion
         var myGeo = new window.BMap.Geocoder();
         // 将地址解析结果显示在地图上，并调整地图视野    
         myGeo.getPoint(cityInfo.label, async (point) => {
@@ -58,7 +58,7 @@ export default class MyMap extends Component {
     }
 
     // 发请求  遍历数据 渲染覆盖物
-    renderOverlays(id) {
+    async renderOverlays(id) {
 
         //获取当前城市下的房源数据
         const res = await axios.get(`http://localhost:8080/area/map`, {
@@ -67,23 +67,60 @@ export default class MyMap extends Component {
             }
         });
 
+        const { type, nextZoom } = this.getTypeAndZoom();
+
         res.data.body.forEach((v, i, a) => {
 
-            this.createOverlays(v.coord.longitude, v.coord.latitude, v.count, v.label);
+            this.createOverlays(v, type, nextZoom);
         });
 
     }
 
+    // 获取下一级地图的覆盖物 渲染的类型  和  地图的缩放级别
+    getTypeAndZoom() {
+        const zoom = this.map.getZoom();
+        let type = 'circle';
+        let nextZoom = 0;
+
+        if (10 <= zoom && zoom < 12) {
+            // 城市下的区这一级
+            nextZoom = 13;
+        } else if (12 <= zoom && zoom < 14) {
+            //镇和村 级别
+            nextZoom = 15;
+        } else if (14 <= zoom < 16) {
+            type = 'rect';
+        }
+
+        return {
+            type,
+            nextZoom
+        }
+    }
+
 
     // 渲染覆盖物
-    createOverlays(longitude, latitude, count, name) {
+    createOverlays({ coord, count, label, value }, type, nextZoom) {
 
-        var opts = {
-            position: new window.BMap.Point(longitude, latitude), // 指定文本标注所在的地理位置
+        if (type === 'circle') {
+            // 创建圆形覆盖物
+            this.createCircle(value, coord.longitude, coord.latitude, count, label, nextZoom);
+        } else {
+            // 创建方形覆盖物
+            this.createReact(value, coord.longitude, coord.latitude, count, label);
+        }
+    }
+
+    // 渲染圆形覆盖物
+    createCircle(id, longitude, latitude, count, name, nextZoom) {
+
+        const point = new window.BMap.Point(longitude, latitude);
+        const opts = {
+            position: point, // 指定文本标注所在的地理位置
             offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
         };
         // 创建文本标注对象
-        var label = new window.BMap.Label('', opts);
+        const label = new window.BMap.Label('', opts);
         // 自定义文本标注样式
         label.setStyle(labelStyle);
 
@@ -94,11 +131,25 @@ export default class MyMap extends Component {
                     </div>
                 `)
         this.map.addOverlay(label);
-    }
 
-    // 渲染圆形覆盖物
-    createCircle() {
+        label.addEventListener('click', () => {
 
+            // 1. 放大
+            this.map.panTo(point);
+            // 2. 把被点击的地方 移动地图中心位置
+            this.map.setZoom(nextZoom);
+
+            // this.map.centerAndZoom(point, nextZoom);
+
+            // 3.清除原来的覆盖物
+            // 解决百度地图bug
+            setTimeout(() => {
+                this.map.clearOverlays();
+            }, 0)
+            // 4. 加载新的覆盖物
+            this.renderOverlays(id);
+            console.log('被点击了!')
+        })
     }
     // 渲染方形覆盖物
     createReact() {
