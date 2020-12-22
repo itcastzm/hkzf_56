@@ -37,20 +37,24 @@ export default class MyMap extends Component {
                     offset: new window.BMap.Size(30, -30) // 设置文本偏移量
                 };
                 // 创建文本标注对象
-                var label = new window.BMap.Label('你好', opts);
+                var label = new window.BMap.Label('', opts);
                 // 自定义文本标注样式
                 label.setStyle({
-                    color: 'red',
-                    borderRadius: '5px',
-                    borderColor: '#ccc',
-                    padding: '10px',
-                    fontSize: '16px',
-                    height: '30px',
-                    lineHeight: '30px',
-                    fontFamily: '微软雅黑'
+                    cursor: 'pointer',
+                    border: '0px solid rgb(255,0,0)',
+                    padding: '0px',
+                    whiteSpace: 'nowrap',
+                    fontSize: '12px',
+                    color: 'rbg(255,255,255)',
+                    textAlign: 'center'
                 });
 
-
+                label.setContent(`
+                    <div  class="${styles.bubble}">
+                        <p class="${styles.name}">番禺</p>
+                        <p >120套</p>
+                    </div>
+                `)
                 map.addOverlay(label);
 
 
