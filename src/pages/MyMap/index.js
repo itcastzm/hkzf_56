@@ -24,6 +24,10 @@ const labelStyle = {
 
 export default class MyMap extends Component {
 
+    state = {
+        isShowHouseList: false
+    }
+
     componentDidMount() {
 
         this.initMap();
@@ -55,6 +59,17 @@ export default class MyMap extends Component {
 
             }
         }, cityInfo.label);
+
+
+        map.addEventListener('dragstart', () => {
+
+            if (this.state.isShowHouseList) {
+                this.setState({
+                    isShowHouseList: false
+                });
+            }
+
+        })
     }
 
     // 发请求  遍历数据 渲染覆盖物
@@ -173,8 +188,29 @@ export default class MyMap extends Component {
                 `)
         this.map.addOverlay(label);
 
-        label.addEventListener('click', () => {
+        label.addEventListener('click', (e) => {
 
+            /* 
+                1 创建 Label 、设置样式、设置 HTML 内容，绑定单击事件。
+                2 在单击事件中，获取该小区的房源数据。
+                3 展示房源列表。
+                4 渲染获取到的房源数据。
+
+                5 调用地图 panBy() 方法，移动地图到中间位置。
+                公式：
+                    垂直位移：(window.innerHeight - 330) / 2 - target.clientY
+                    水平平移：window.innerWidth / 2 - target.clientX
+                6 监听地图 movestart 事件，在地图移动时隐藏房源列表。
+            */
+            const target = e.changedTouches[0];
+            // console.log(e);
+            this.map.panBy(window.innerWidth / 2 - target.clientX,
+                (window.innerHeight - 330) / 2 - target.clientY
+            );
+
+            this.setState({
+                isShowHouseList: true
+            });
 
         });
     }
@@ -184,6 +220,11 @@ export default class MyMap extends Component {
             <div className={styles.map}>
                 <NavHeader >地图找房</NavHeader>
                 <div id="container" className={styles.container} ></div>
+
+                {/* <div className={[styles.houselist, this.state.isShowHouseList ? styles.show : ''].join(' ')}> */}
+                <div className={`${styles.houselist}   ${this.state.isShowHouseList ? styles.show : ''}`}>
+
+                </div>
             </div>
         )
     }
