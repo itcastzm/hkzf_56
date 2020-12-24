@@ -73,6 +73,60 @@
         background-color: #fff;
         transform: translateY(330px);
         transition: all 1s;
+
+
+        .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            padding: 15px 10px;
+            background-color: #c0c0c2;
+
+            .more {
+                float: right;
+                // margin-right: 10px;
+                font-size: 12px;
+                color: #666;
+            }
+        }
+
+        .houseItem {
+            padding: 10px;
+            height: 120px;
+            border-bottom: 1px solid #f5f6f5;
+
+            .imgWrap {
+                width: 106px;
+                height: 80px;
+                float: left;
+
+                img {
+                    width: 106px;
+                    height: 80px;
+                }
+            }
+
+            .right {
+
+                .tags {
+                    .tag1 {
+                        color: #3fc28c;
+                        padding: 2px 5px;
+                    }
+
+                    .tag2 {
+                        color: #39becd;
+                        padding: 2px 5px;
+                    }
+
+                    .tag3 {
+                        color: #00a75b;
+                        padding: 2px 5px;
+                    }
+                }
+            }
+        }
+
     }
 
 

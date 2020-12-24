@@ -25,7 +25,8 @@ const labelStyle = {
 export default class MyMap extends Component {
 
     state = {
-        isShowHouseList: false
+        isShowHouseList: false,
+        houseList: []
     }
 
     componentDidMount() {
@@ -189,10 +190,10 @@ export default class MyMap extends Component {
         this.map.addOverlay(label);
 
         label.addEventListener('click', (e) => {
-
             /* 
                 1 创建 Label 、设置样式、设置 HTML 内容，绑定单击事件。
                 2 在单击事件中，获取该小区的房源数据。
+
                 3 展示房源列表。
                 4 渲染获取到的房源数据。
 
@@ -208,11 +209,25 @@ export default class MyMap extends Component {
                 (window.innerHeight - 330) / 2 - target.clientY
             );
 
-            this.setState({
-                isShowHouseList: true
-            });
+            this.getHouseList(id);
+
 
         });
+    }
+
+    async getHouseList(id) {
+
+        const res = await axios.get(`http://localhost:8080/houses`, {
+            params: {
+                cityId: id
+            }
+        });
+
+        this.setState({
+            houseList: res.data.body.list,
+            isShowHouseList: true
+        });
+
     }
     render() {
         return (
@@ -223,7 +238,37 @@ export default class MyMap extends Component {
 
                 {/* <div className={[styles.houselist, this.state.isShowHouseList ? styles.show : ''].join(' ')}> */}
                 <div className={`${styles.houselist}   ${this.state.isShowHouseList ? styles.show : ''}`}>
+                    <div className={styles.title}>
+                        房屋列表 <span className={styles.more}>更多房源</span>
+                    </div>
 
+                    {this.state.houseList.map((item) => (
+
+                        <div className={styles.houseItem} key={item.houseCode}>
+                            <div className={styles.imgWrap}>
+                                <img src={`http://localhost:8080${item.houseImg}`} alt="" />
+                            </div>
+
+                            <div className={styles.right}>
+                                <div className={styles.houseTitle}>
+                                    {item.title}
+                                </div>
+                                <div>
+                                    {item.desc}
+                                </div>
+                                <div className={styles.tags}>
+                                    {item.tags.map((tag, i) => (
+                                        <span key={tag} className={styles[`tag${i + 1}`]}>{tag}</span>
+                                    ))}
+                                </div>
+                                <div className="prices">
+                                    3000<span>元/月</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    ))}
                 </div>
             </div>
         )
