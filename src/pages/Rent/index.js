@@ -7,6 +7,8 @@ import { Flex } from 'antd-mobile';
 
 import styles from './index.module.scss';
 
+import Filter from './components/Filter';
+
 export default class Rent extends Component {
     render() {
         return (
@@ -16,7 +18,7 @@ export default class Rent extends Component {
                     <SearchHeader className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
-                找房页面
+                <Filter />
             </div>
         )
     }
