@@ -4,6 +4,8 @@ import SearchHeader from '../../components/SearchHeader';
 
 import { Flex } from 'antd-mobile';
 
+import { getCurrentCityInfo } from '../../utils'
+
 
 import styles from './index.module.scss';
 
@@ -11,12 +13,25 @@ import Filter from './components/Filter';
 
 export default class Rent extends Component {
 
+
+    state = {
+        cityInfo: {}
+    }
+
+
+    async componentDidMount() {
+        const cityInfo = await getCurrentCityInfo();
+        this.setState({
+            cityInfo: cityInfo
+        })
+    }
+
     render() {
         return (
             <div>
                 <Flex className={styles.heander}>
                     <i className="iconfont icon-back" onClick={() => this.props.history.go(-1)}></i>
-                    <SearchHeader className={styles.searchHeader}></SearchHeader>
+                    <SearchHeader cityName={this.state.cityInfo.label} className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
                 <Filter />
