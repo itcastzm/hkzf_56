@@ -7,10 +7,12 @@ import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 import { getCurrentCityInfo } from '../../utils'
 
 // 引入axios 
-import axios from 'axios';
 
 import API from '../../utils/api';
 import { BASE_URL } from '../../utils/url'
+
+import SearchHeader from '../../components/SearchHeader'
+
 
 // 导入图片  格式是Base64格式 能够减少tcp请求
 import Nav1 from '../../assets/images/nav-1.png';
@@ -163,7 +165,7 @@ export default class Index extends Component {
                     {this.renderSwipers()}
 
                     {/* 搜索框 */}
-                    <Flex className="search-box">
+                    {/* <Flex className="search-box">
                         <Flex className="search">
                             <div className="location" onClick={() => this.props.history.push('/citylist')}>
                                 {this.state.cityInfo.label || '上海'}
@@ -175,7 +177,9 @@ export default class Index extends Component {
                             </div>
                         </Flex>
                         <i className="iconfont icon-map" onClick={() => this.props.history.push('/map')}></i>
-                    </Flex>
+                    </Flex> */}
+
+                    <SearchHeader cityName={this.state.cityInfo.label}></SearchHeader>
 
                 </div>
 
