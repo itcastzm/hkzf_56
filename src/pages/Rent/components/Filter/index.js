@@ -7,23 +7,23 @@ import FilterMore from '../FilterMore'
 import styles from './index.module.css'
 
 export default class Filter extends Component {
-  render() {
-    return (
-      <div className={styles.root}>
-        {/* 前三个菜单的遮罩层 */}
-        {/* <div className={styles.mask} /> */}
+    render() {
+        return (
+            <div className={styles.root}>
+                {/* 前三个菜单的遮罩层 */}
+                {/* <div className={styles.mask} /> */}
 
-        <div className={styles.content}>
-          {/* 标题栏 */}
-          <FilterTitle />
+                <div className={styles.content}>
+                    {/* 标题栏 */}
+                    <FilterTitle />
 
-          {/* 前三个菜单对应的内容： */}
-          {/* <FilterPicker /> */}
+                    {/* 前三个菜单对应的内容： */}
+                    {/* <FilterPicker /> */}
 
-          {/* 最后一个菜单对应的内容： */}
-          {/* <FilterMore /> */}
-        </div>
-      </div>
-    )
-  }
+                    {/* 最后一个菜单对应的内容： */}
+                    {/* <FilterMore /> */}
+                </div>
+            </div>
+        )
+    }
 }

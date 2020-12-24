@@ -10,6 +10,7 @@ import styles from './index.module.scss';
 import Filter from './components/Filter';
 
 export default class Rent extends Component {
+
     render() {
         return (
             <div>
