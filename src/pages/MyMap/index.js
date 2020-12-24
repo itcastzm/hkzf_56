@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import NavHeader from '../../components/NavHeader';
 import { getCurrentCityInfo } from '../../utils';
 
+import { Toast } from 'antd-mobile';
+
 import axios from 'axios';
 
 // Set  
@@ -77,11 +79,15 @@ export default class MyMap extends Component {
     async renderOverlays(id) {
 
         //获取当前城市下的房源数据
+        // 开启loading框
+        Toast.loading('加载中...');
         const res = await axios.get(`http://localhost:8080/area/map`, {
             params: {
                 id: id
             }
         });
+        // 关闭loading框
+        Toast.hide();
 
         const { type, nextZoom } = this.getTypeAndZoom();
 
@@ -217,11 +223,16 @@ export default class MyMap extends Component {
 
     async getHouseList(id) {
 
+        // 开启loading框
+        Toast.loading('加载中...');
         const res = await axios.get(`http://localhost:8080/houses`, {
             params: {
                 cityId: id
             }
         });
+
+        // 关闭loading框
+        Toast.hide();
 
         this.setState({
             houseList: res.data.body.list,
