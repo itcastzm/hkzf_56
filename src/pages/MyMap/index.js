@@ -4,7 +4,11 @@ import { getCurrentCityInfo } from '../../utils';
 
 import { Toast } from 'antd-mobile';
 
-import axios from 'axios';
+import API from '../../utils/api';
+
+import { BASE_URL } from '../../utils/url';
+
+
 
 // Set  
 // Map 
@@ -23,6 +27,8 @@ const labelStyle = {
     color: 'rbg(255,255,255)',
     textAlign: 'center'
 };
+
+console.log('BASE_URL', BASE_URL);
 
 export default class MyMap extends Component {
 
@@ -81,7 +87,7 @@ export default class MyMap extends Component {
         //获取当前城市下的房源数据
         // 开启loading框
         Toast.loading('加载中...');
-        const res = await axios.get(`http://localhost:8080/area/map`, {
+        const res = await API.get(`/area/map`, {
             params: {
                 id: id
             }
@@ -225,7 +231,7 @@ export default class MyMap extends Component {
 
         // 开启loading框
         Toast.loading('加载中...');
-        const res = await axios.get(`http://localhost:8080/houses`, {
+        const res = await API.get(`/houses`, {
             params: {
                 cityId: id
             }
@@ -257,7 +263,7 @@ export default class MyMap extends Component {
 
                         <div className={styles.houseItem} key={item.houseCode}>
                             <div className={styles.imgWrap}>
-                                <img src={`http://localhost:8080${item.houseImg}`} alt="" />
+                                <img src={`${BASE_URL}${item.houseImg}`} alt="" />
                             </div>
 
                             <div className={styles.right}>

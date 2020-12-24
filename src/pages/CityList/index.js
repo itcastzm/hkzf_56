@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 // 引入antd-mobile 组件
 import { NavBar, Toast } from 'antd-mobile';
 
-import axios from 'axios';
+import API from '../../utils/api'
 
 import NavHeader from '../../components/NavHeader'
 
@@ -86,13 +86,13 @@ export default class CityList extends Component {
 
 
     async getCityListData() {
-        const res = await axios.get(`http://localhost:8080/area/city?level=1`);
+        const res = await API.get(`/area/city?level=1`);
 
         // 将请求到的数据  处理成可以渲染的结构
         const { cityIndex, cityObj } = formatCityListData(res.data.body);
 
         // 获取热门城市数据
-        const hotRes = await axios.get(`http://localhost:8080/area/hot`);
+        const hotRes = await API.get(`/area/hot`);
 
         // 处理热门城市数据
         cityIndex.unshift('hot');

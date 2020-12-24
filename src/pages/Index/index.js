@@ -9,6 +9,9 @@ import { getCurrentCityInfo } from '../../utils'
 // 引入axios 
 import axios from 'axios';
 
+import API from '../../utils/api';
+import { BASE_URL } from '../../utils/url'
+
 // 导入图片  格式是Base64格式 能够减少tcp请求
 import Nav1 from '../../assets/images/nav-1.png';
 import Nav2 from '../../assets/images/nav-2.png';
@@ -27,10 +30,6 @@ const navs = [
 ];
 
 
-const data = Array.from(new Array(9)).map((_val, i) => ({
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/nywPmnTAvTmLusPxHPSu.png',
-    text: `name${i}`,
-}));
 
 export default class Index extends Component {
 
@@ -72,7 +71,7 @@ export default class Index extends Component {
     }
 
     async getSwipersData() {
-        const res = await axios.get(`http://localhost:8080/home/swiper`);
+        const res = await API.get(`/home/swiper`);
 
         this.setState({
             swipers: res.data.body
@@ -81,7 +80,7 @@ export default class Index extends Component {
 
     // 获取租房小组数据
     async getGroups() {
-        const res = await axios.get(`http://localhost:8080/home/groups`, {
+        const res = await API.get(`/home/groups`, {
             params: {
                 area: `AREA%7C88cff55c-aaa4-e2e0`
             }
@@ -93,7 +92,7 @@ export default class Index extends Component {
     }
 
     async getNewsData() {
-        const res = await axios.get(`http://localhost:8080/home/news`, {
+        const res = await API.get(`/home/news`, {
             params: {
                 area: 'AREA%7C88cff55c-aaa4-e2e0'
             }
@@ -122,7 +121,7 @@ export default class Index extends Component {
                             style={{ display: 'inline-block', width: '100%', height: 212 }}
                         >
                             <img
-                                src={`http://localhost:8080${val.imgSrc}`}
+                                src={`${BASE_URL}${val.imgSrc}`}
                                 alt=""
                                 style={{ width: '100%', verticalAlign: 'top' }}
                                 onLoad={() => {
@@ -202,7 +201,7 @@ export default class Index extends Component {
                                         <span className="info">{item.desc}</span>
                                     </div>
                                     <img
-                                        src={'http://localhost:8080' + item.imgSrc}
+                                        src={BASE_URL + item.imgSrc}
                                         alt=""
                                     />
                                 </Flex>
@@ -221,7 +220,7 @@ export default class Index extends Component {
                         {this.state.news.map((item) => (
                             <div className="news-item" key={item.id}>
                                 <div className="img-wrap">
-                                    <img alt="" src={'http://localhost:8080' + item.imgSrc} />
+                                    <img alt="" src={BASE_URL + item.imgSrc} />
                                 </div>
                                 <Flex className="content" direction="column" justify="between" >
                                     <div className="title">{item.title}</div>

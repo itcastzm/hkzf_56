@@ -1,5 +1,5 @@
-import axios from 'axios';
 
+import API from './api';
 
 
 function getCurrentCityInfo() {
@@ -21,7 +21,7 @@ function getCurrentCityInfo() {
 
                 myCity.get(async (result) => {
 
-                    const res = await axios.get(`http://localhost:8080/area/info`, {
+                    const res = await API.get(`/area/info`, {
                         params: {
                             name: result.name
                         }
