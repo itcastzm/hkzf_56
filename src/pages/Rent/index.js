@@ -8,17 +8,22 @@ import { getCurrentCityInfo } from '../../utils'
 
 import API from '../../utils/api';
 
+import { BASE_URL } from '../../utils/url'
+import { List, AutoSizer } from 'react-virtualized';
 
 import styles from './index.module.scss';
 
 import Filter from './components/Filter';
+
+import HouseItem from '../../components/HouseItem';
 
 export default class Rent extends Component {
 
 
     state = {
         cityInfo: {},
-        houseList: []
+        houseList: [],
+        count: 0
     }
 
     filters = {}
@@ -57,15 +62,54 @@ export default class Rent extends Component {
 
     }
 
+    rowRenderer = ({
+        key, // Unique key within array of rows
+        index, // Index of row within collection
+        isScrolling, // The List is currently being scrolled
+        isVisible, // This row is visible within the List (eg it is not an overscanned row)
+        style, // Style object to be applied to row (to position it)
+    }) => {
+        let { houseList } = this.state;
+        let house = houseList[index];
+
+        return <HouseItem
+            key={key}
+            style={style}
+            src={BASE_URL + house.houseImg}
+            title={house.title}
+            desc={house.desc}
+            tags={house.tags}
+            price={house.price}
+        />;
+    }
     render() {
+
         return (
-            <div>
+            <div className={styles.root}>
                 <Flex className={styles.heander}>
                     <i className="iconfont icon-back" onClick={() => this.props.history.go(-1)}></i>
                     <SearchHeader cityName={this.state.cityInfo.label} className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
                 <Filter onFilter={this.onFilter} />
+
+                <div className={styles.houseItem}>
+                    {/* 房源列表 */}
+                    {/* <AutoSizer>
+                        {
+                            ({ height, width }) => ( */}
+                    <List
+                        width={300}
+                        height={300}
+                        rowCount={this.state.count}
+                        rowHeight={120}
+                        rowRenderer={this.rowRenderer}
+                    />
+                    {/* )
+                        }
+                    </AutoSizer> */}
+
+                </div>
             </div>
         )
     }

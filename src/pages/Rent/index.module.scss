@@ -1,24 +1,34 @@
-.heander {
+.root {
 
-    :global(.icon-back) {
-        font-size: 16px;
-        color: #999;
+    height: 100%;
+
+    .heander {
+
+        :global(.icon-back) {
+            font-size: 16px;
+            color: #999;
+        }
+
+        .searchHeader {
+            position: relative;
+            top: 0;
+
+            height: 45px;
+            padding: 0 10px;
+            background-color: #f6f5f6;
+
+            :global(.search) {
+                height: 30px;
+            }
+
+            :global(.icon-map) {
+                color: #00ae66;
+            }
+        }
     }
 
-    .searchHeader {
-        position: relative;
-        top: 0;
 
-        height: 45px;
+    .houseItem {
         padding: 0 10px;
-        background-color: #f6f5f6;
-
-        :global(.search) {
-            height: 30px;
-        }
-
-        :global(.icon-map) {
-            color: #00ae66;
-        }
     }
 }
