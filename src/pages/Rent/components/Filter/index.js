@@ -28,7 +28,7 @@ export default class Filter extends Component {
             area: ['area', 'null'],
             mode: ['null'],
             price: ['null'],
-            more: ['null']
+            more: []
         }
     }
 
@@ -75,8 +75,8 @@ export default class Filter extends Component {
             } else if (key === 'price' && selectValue[0] !== 'null') {
                 // 价格
                 newTitlteSelectValues[key] = true;
-            } else if (key === 'more') {
-                // TODO
+            } else if (key === 'more' && selectValue.length) {
+                newTitlteSelectValues[key] = true;
             } else {
                 newTitlteSelectValues[key] = false;
             }
@@ -91,20 +91,78 @@ export default class Filter extends Component {
     }
 
     onCancel = () => {
-        this.setState({
-            openType: ''
-        })
-    }
 
-    onSave = (type, value) => {
+        // console.log('type', type);
+        const { titleSelectedStatus, selectedValues } = this.state;
+
+        let newTitlteSelectValues = { ...titleSelectedStatus };
+
+        // ['area', 'mode', 'price', 'more' ]
+        Object.keys(titleSelectedStatus).forEach((key) => {
+
+            let selectValue = selectedValues[key];
+
+            if (key === 'area' && (selectValue[1] !== 'null' || selectValue[0] != 'area')) {
+                // 区域
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'mode' && selectValue[0] !== 'null') {
+                // 方式
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'price' && selectValue[0] !== 'null') {
+                // 价格
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'more' && selectValue.length) {
+                newTitlteSelectValues[key] = true;
+            } else {
+                newTitlteSelectValues[key] = false;
+            }
+
+        })
 
 
         this.setState({
             openType: '',
-            selectedValues: {
-                ...this.state.selectedValues,
-                [type]: value
+            titleSelectedStatus: newTitlteSelectValues
+        });
+    }
+
+    onSave = (type, value) => {
+
+        // console.log('type', type);
+        const { titleSelectedStatus, selectedValues } = this.state;
+        let newSelectValues = {
+            ...selectedValues,
+            [type]: value
+        };
+        let newTitlteSelectValues = { ...titleSelectedStatus };
+
+        // ['area', 'mode', 'price', 'more' ]
+        Object.keys(titleSelectedStatus).forEach((key) => {
+
+            let selectValue = newSelectValues[key];
+
+            if (key === 'area' && (selectValue[1] !== 'null' || selectValue[0] != 'area')) {
+                // 区域
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'mode' && selectValue[0] !== 'null') {
+                // 方式
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'price' && selectValue[0] !== 'null') {
+                // 价格
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'more' && selectValue.length) {
+                newTitlteSelectValues[key] = true;
+            } else {
+                newTitlteSelectValues[key] = false;
             }
+
+        })
+
+
+        this.setState({
+            openType: '',
+            titleSelectedStatus: newTitlteSelectValues,
+            selectedValues: newSelectValues
         })
     }
 
@@ -149,10 +207,10 @@ export default class Filter extends Component {
 
     renderFilterMore() {
         const { openType, filterData: {
-            characteristic,
-            floor,
-            oriented,
-            roomType
+            characteristic,  //房屋亮点
+            floor,  //楼层
+            oriented,   //朝向
+            roomType // 房屋类型
         }, selectedValues } = this.state;
 
         if (openType === 'more') {
