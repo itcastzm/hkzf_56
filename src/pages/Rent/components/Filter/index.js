@@ -55,11 +55,37 @@ export default class Filter extends Component {
 
     onTitleClick = (type) => {
         // console.log('type', type);
+        const { titleSelectedStatus, selectedValues } = this.state;
+        let newTitlteSelectValues = { ...titleSelectedStatus };
+
+        // ['area', 'mode', 'price', 'more' ]
+        Object.keys(titleSelectedStatus).forEach((key) => {
+
+            let selectValue = selectedValues[key];
+
+            if (key === type) {
+                // 是不是当前点击项
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'area' && (selectValue[1] !== 'null' || selectValue[0] != 'area')) {
+                // 区域
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'mode' && selectValue[0] !== 'null') {
+                // 方式
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'price' && selectValue[0] !== 'null') {
+                // 价格
+                newTitlteSelectValues[key] = true;
+            } else if (key === 'more') {
+                // TODO
+            } else {
+                newTitlteSelectValues[key] = false;
+            }
+
+        })
+
+
         this.setState({
-            titleSelectedStatus: {
-                ...this.state.titleSelectedStatus,
-                [type]: true
-            },
+            titleSelectedStatus: newTitlteSelectValues,
             openType: type
         });
     }
