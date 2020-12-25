@@ -153,16 +153,22 @@ export default class Filter extends Component {
             floor,
             oriented,
             roomType
-        } } = this.state;
+        }, selectedValues } = this.state;
 
         if (openType === 'more') {
 
-            return <FilterMore data={{
-                characteristic,
-                floor,
-                oriented,
-                roomType
-            }} />
+            return <FilterMore
+
+                onCancel={this.onCancel}
+                onSave={this.onSave}
+
+                defaultValue={selectedValues.more}
+                data={{
+                    characteristic,
+                    floor,
+                    oriented,
+                    roomType
+                }} />
         }
 
         return null;
