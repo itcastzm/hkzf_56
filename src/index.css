@@ -19,7 +19,10 @@ html,
 body,
 ul,
 li,
-p {
+p,
+dl,
+dd,
+dt {
     margin: 0;
     padding: 0;
 }
