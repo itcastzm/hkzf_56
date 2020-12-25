@@ -26,6 +26,10 @@ export default class Rent extends Component {
         })
     }
 
+    onFilter = (filters) => {
+        console.log('filters:', filters);
+    }
+
     render() {
         return (
             <div>
@@ -34,7 +38,7 @@ export default class Rent extends Component {
                     <SearchHeader cityName={this.state.cityInfo.label} className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
-                <Filter />
+                <Filter onFilter={this.onFilter} />
             </div>
         )
     }

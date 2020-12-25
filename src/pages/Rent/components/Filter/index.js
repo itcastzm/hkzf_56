@@ -156,7 +156,46 @@ export default class Filter extends Component {
                 newTitlteSelectValues[key] = false;
             }
 
-        })
+        });
+
+
+        // 是不是可以触发发请求了？
+
+        // 针对  newSelectValues 值做处理
+        let filters = {};
+
+        // 针对area 区域
+        let areaList = newSelectValues.area;
+
+        let areaKey = areaList[0] === 'area' ? 'area' : 'subway';
+        let areaValue = '';
+
+        if (areaList.length === 3 && areaList[2] !== 'null') {
+            areaValue = areaList[2];
+        } else {
+            areaValue = areaList[1]
+        }
+        // areaValue 总结：只有长度为3 并且数组第三个元素不为 null  值取第三个元素 否则值都取第二个元素
+
+        filters[areaKey] = areaValue;
+        // if (areaList.length === 2) {
+        //     areaValue = areaList[1];
+        // } else if (areaList.length === 3) {
+        //     if (areaList[2] === 'null') {
+        //         areaValue = areaList[1];
+        //     } else {
+        //         areaValue = areaList[2];
+        //     }
+        // }
+
+        // 方式
+        filters.mode = newSelectValues.mode[0];
+        //租金
+        filters.price = newSelectValues.price[0];
+        //筛选
+        filters.more = newSelectValues.more.join(',')
+
+        this.props.onFilter(filters);
 
 
         this.setState({
