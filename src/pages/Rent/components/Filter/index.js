@@ -23,7 +23,13 @@ export default class Filter extends Component {
     state = {
         titleSelectedStatus,
         openType: '',
-        filterData: {}
+        filterData: {},
+        selectedValues: {
+            area: ['area', 'null'],
+            mode: ['null'],
+            price: ['null'],
+            more: ['null']
+        }
     }
 
 
@@ -64,9 +70,15 @@ export default class Filter extends Component {
         })
     }
 
-    onSave = () => {
+    onSave = (type, value) => {
+
+
         this.setState({
-            openType: ''
+            openType: '',
+            selectedValues: {
+                ...this.state.selectedValues,
+                [type]: value
+            }
         })
     }
 
@@ -98,7 +110,7 @@ export default class Filter extends Component {
             }
 
 
-            return <FilterPicker data={data} cols={cols} onSave={this.onSave} onCancel={this.onCancel} />;
+            return <FilterPicker data={data} type={openType} cols={cols} onSave={this.onSave} onCancel={this.onCancel} />;
         }
 
 
