@@ -8,7 +8,7 @@ import FilterFooter from '../../../../components/FilterFooter'
 export default class FilterPicker extends Component {
 
     state = {
-        value: []
+        value: this.props.defaultValue
     }
 
     handleChange = (val) => {
@@ -24,6 +24,10 @@ export default class FilterPicker extends Component {
 
     onOk = () => {
         this.props.onSave(this.props.type, this.state.value);
+    }
+
+    componentWillUnmount() {
+        console.log('componentWillUnmount');
     }
 
     render() {

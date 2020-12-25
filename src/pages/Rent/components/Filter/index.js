@@ -87,30 +87,33 @@ export default class Filter extends Component {
 
         const { openType, filterData: {
             area, subway, rentType, price
-        } } = this.state;
+        }, selectedValues } = this.state;
 
         if (openType === 'area' || openType === 'mode' || openType === 'price') {
 
             let data = null;
             let cols = 1;
+            let defaultValue = [];
 
             switch (openType) {
                 case 'area':
                     data = [area, subway];
                     cols = 3;
+                    defaultValue = selectedValues.area;
                     break;
                 case 'mode':
                     data = rentType;
+                    defaultValue = selectedValues.mode;
                     break;
                 case 'price':
                     data = price;
+                    defaultValue = selectedValues.price;
                     break;
                 default:
                     break;
             }
 
-
-            return <FilterPicker data={data} type={openType} cols={cols} onSave={this.onSave} onCancel={this.onCancel} />;
+            return <FilterPicker key={openType} defaultValue={defaultValue} data={data} type={openType} cols={cols} onSave={this.onSave} onCancel={this.onCancel} />;
         }
 
 
