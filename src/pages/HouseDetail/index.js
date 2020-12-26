@@ -181,7 +181,7 @@ export default class HouseDetail extends Component {
                 <NavHeader
                     className={styles.navHeader}
                     rightContent={[<i key="share" className="iconfont icon-share" />]}
-                >  {houseInfo.community} </NavHeader>
+                >{houseInfo.community}</NavHeader>
 
                 {/* 轮播图 */}
                 <div className={styles.slides}>

@@ -8,7 +8,9 @@ import API from '../../../../utils/api';
 
 import { getCurrentCityInfo } from '../../../../utils'
 
-import styles from './index.module.css'
+import styles from './index.module.css';
+
+import { Spring } from 'react-spring/renderprops';
 
 
 const titleSelectedStatus = {
@@ -271,6 +273,25 @@ export default class Filter extends Component {
         return null;
     }
 
+
+    renderMask() {
+
+        const { openType } = this.state;
+
+        let isShowMask = openType === 'area' || openType === 'mode' || openType === 'price';
+
+        return (
+            <Spring config={{ duration: 1000 }}
+                from={{ opacity: 0 }}
+                to={{ opacity: isShowMask ? 1 : 0 }}  >
+
+                {props => {
+                    return props.opacity === 0 ? null : <div style={props} className={styles.mask} onClick={this.onCancel} />;
+                }}
+            </Spring>
+        )
+    }
+
     render() {
 
         const { openType } = this.state;
@@ -278,8 +299,7 @@ export default class Filter extends Component {
             <div className={styles.root}>
                 {/* 前三个菜单的遮罩层 */}
                 {
-                    openType === 'area' || openType === 'mode' || openType === 'price' ?
-                        <div className={styles.mask} onClick={this.onCancel} /> : null
+                    this.renderMask()
                 }
 
                 <div className={styles.content}>

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import './index.scss';
 
-function NavHeader({ history, onLeftClick, children }) {
+function NavHeader({ history, onLeftClick, children, rightContent }) {
 
     //默认值  点击左侧图标效果
     const defaultHandle = () => history.go(-1);
@@ -18,13 +18,14 @@ function NavHeader({ history, onLeftClick, children }) {
             mode="light"
             icon={<i className="iconfont icon-back"></i>}
             onLeftClick={onLeftClick || defaultHandle}
+            rightContent={rightContent}
         >{children}</NavBar>
     )
 }
 
 
 NavHeader.propTypes = {
-    children: PropTypes.string,
+    children: PropTypes.node,
     onLeftClick: PropTypes.func
 }
 
