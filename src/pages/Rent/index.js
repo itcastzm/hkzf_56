@@ -15,6 +15,8 @@ import styles from './index.module.scss';
 
 import Filter from './components/Filter';
 
+import Sticky from '../../components/Sticky'
+
 import HouseItem from '../../components/HouseItem';
 
 export default class Rent extends Component {
@@ -109,6 +111,9 @@ export default class Rent extends Component {
         //     .then(response => {
         //         // Store response data in list...
         //     })
+        console.log(startIndex, stopIndex);
+
+
         const cityInfo = await getCurrentCityInfo();
         return new Promise((resolve, reject) => {
 
@@ -142,7 +147,9 @@ export default class Rent extends Component {
                     <SearchHeader cityName={this.state.cityInfo.label} className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
-                <Filter onFilter={this.onFilter} />
+                <Sticky>
+                    <Filter onFilter={this.onFilter} />
+                </Sticky>
 
                 <div className={styles.houseItem}>
                     {/* 房源列表 */}
