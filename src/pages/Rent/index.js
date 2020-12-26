@@ -87,6 +87,7 @@ export default class Rent extends Component {
 
 
         return <HouseItem
+            onClick={() => this.props.history.push(`/house/${house.houseCode}`)}
             key={key}
             style={style}
             src={BASE_URL + house.houseImg}
@@ -147,7 +148,7 @@ export default class Rent extends Component {
                     <SearchHeader cityName={this.state.cityInfo.label} className={styles.searchHeader}></SearchHeader>
                 </Flex>
 
-                <Sticky>
+                <Sticky height={40}>
                     <Filter onFilter={this.onFilter} />
                 </Sticky>
 

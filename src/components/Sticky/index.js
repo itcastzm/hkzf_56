@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import './index.scss';
 
+import PropTypes from 'prop-types';
+
 export default class Sticky extends Component {
 
     // constructor() {
@@ -23,14 +25,14 @@ export default class Sticky extends Component {
         if (top > 0) {
             //    取消吸顶
             if (content.classList.contains('fiexd')) {
-                el.style.height = 0;
+                el.style.height = `0px`;
                 content.classList.remove('fiexd');
             }
 
         } else {
             // 吸顶
             if (!content.classList.contains('fiexd')) {
-                el.style.height = 40;
+                el.style.height = `${this.props.height}px`;
                 content.classList.add('fiexd');
             }
         }
@@ -57,4 +59,8 @@ export default class Sticky extends Component {
             </>
         )
     }
+}
+
+Sticky.propTypes = {
+    height: PropTypes.number.isRequired
 }

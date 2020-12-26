@@ -10,6 +10,8 @@ import CityList from './pages/CityList';
 
 import MyMap from './pages/MyMap';
 
+import HouseDetail from './pages/HouseDetail';
+
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -20,6 +22,7 @@ export default function App() {
                 {/* 路径和页面组件的关系 */}
                 <Route exact path="/" render={() => <Redirect to="/home" />} />
                 <Route path="/home" component={Home} />
+                <Route path="/house/:id" component={HouseDetail} />
                 <Route path="/citylist" component={CityList} />
                 <Route path="/map" component={MyMap} />
                 <Route path="*" component={NotFound} />
