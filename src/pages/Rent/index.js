@@ -9,7 +9,7 @@ import { getCurrentCityInfo } from '../../utils'
 import API from '../../utils/api';
 
 import { BASE_URL } from '../../utils/url'
-import { List, AutoSizer, WindowScroller } from 'react-virtualized';
+import { List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized';
 
 import styles from './index.module.scss';
 
@@ -70,7 +70,19 @@ export default class Rent extends Component {
         style, // Style object to be applied to row (to position it)
     }) => {
         let { houseList } = this.state;
+        //houseList.length  20   row 1592
         let house = houseList[index];
+
+        if (!house) {
+            return (
+                <div style={style} key={key}>
+                    <p className={styles.loading}>
+                        加载中...
+                    </p>
+                </div>
+            )
+        }
+
 
         return <HouseItem
             key={key}
@@ -81,7 +93,46 @@ export default class Rent extends Component {
             tags={house.tags}
             price={house.price}
         />;
+
+
     }
+
+    // 告诉无限加载组件  是否已经加载了
+    // 该返回需要返回一个布尔值
+    isRowLoaded = ({ index }) => {
+        //!!undefined
+        return !!this.state.houseList[index];
+    }
+
+    loadMoreRows = async ({ startIndex, stopIndex }) => {
+        // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
+        //     .then(response => {
+        //         // Store response data in list...
+        //     })
+        const cityInfo = await getCurrentCityInfo();
+        return new Promise((resolve, reject) => {
+
+            API.get(`/houses`, {
+                params: {
+                    cityId: cityInfo.value,
+                    start: startIndex,
+                    end: stopIndex,
+                    ...this.filters
+                }
+            }).then((res) => {
+
+                this.setState({
+                    houseList: [...this.state.houseList, ...res.data.body.list],
+                    count: res.data.body.count
+                });
+
+                resolve();
+
+            })
+
+        })
+    }
+
     render() {
 
         return (
@@ -95,25 +146,35 @@ export default class Rent extends Component {
 
                 <div className={styles.houseItem}>
                     {/* 房源列表 */}
-                    <WindowScroller>
-                        {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                            <AutoSizer>
-                                {({ width }) => (
-                                    <List
-                                        autoHeight
-                                        width={width}
-                                        height={height}
-                                        rowCount={this.state.count}
-                                        isScrolling={isScrolling}
-                                        onScroll={onChildScroll}
-                                        scrollTop={scrollTop}
-                                        rowHeight={120}
-                                        rowRenderer={this.rowRenderer}
-                                    />
+                    <InfiniteLoader
+                        isRowLoaded={this.isRowLoaded}
+                        loadMoreRows={this.loadMoreRows}
+                        rowCount={this.state.count}
+                    >
+                        {({ onRowsRendered, registerChild }) => (
+                            <WindowScroller>
+                                {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                                    <AutoSizer>
+                                        {({ width }) => (
+                                            <List
+                                                autoHeight
+                                                width={width}
+                                                height={height}
+                                                rowCount={this.state.count}
+                                                isScrolling={isScrolling}
+                                                onScroll={onChildScroll}
+                                                scrollTop={scrollTop}
+                                                rowHeight={120}
+                                                rowRenderer={this.rowRenderer}
+                                                onRowsRendered={onRowsRendered}
+                                                ref={registerChild}
+                                            />
+                                        )}
+                                    </AutoSizer>
                                 )}
-                            </AutoSizer>
+                            </WindowScroller>
                         )}
-                    </WindowScroller>
+                    </InfiniteLoader>
                 </div>
             </div>
         )
