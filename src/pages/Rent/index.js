@@ -9,7 +9,7 @@ import { getCurrentCityInfo } from '../../utils'
 import API from '../../utils/api';
 
 import { BASE_URL } from '../../utils/url'
-import { List, AutoSizer } from 'react-virtualized';
+import { List, AutoSizer, WindowScroller } from 'react-virtualized';
 
 import styles from './index.module.scss';
 
@@ -95,20 +95,25 @@ export default class Rent extends Component {
 
                 <div className={styles.houseItem}>
                     {/* 房源列表 */}
-                    {/* <AutoSizer>
-                        {
-                            ({ height, width }) => ( */}
-                    <List
-                        width={300}
-                        height={300}
-                        rowCount={this.state.count}
-                        rowHeight={120}
-                        rowRenderer={this.rowRenderer}
-                    />
-                    {/* )
-                        }
-                    </AutoSizer> */}
-
+                    <WindowScroller>
+                        {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                            <AutoSizer>
+                                {({ width }) => (
+                                    <List
+                                        autoHeight
+                                        width={width}
+                                        height={height}
+                                        rowCount={this.state.count}
+                                        isScrolling={isScrolling}
+                                        onScroll={onChildScroll}
+                                        scrollTop={scrollTop}
+                                        rowHeight={120}
+                                        rowRenderer={this.rowRenderer}
+                                    />
+                                )}
+                            </AutoSizer>
+                        )}
+                    </WindowScroller>
                 </div>
             </div>
         )
