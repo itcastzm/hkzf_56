@@ -165,7 +165,7 @@ export default class Rent extends Component {
                                     <AutoSizer>
                                         {({ width }) => (
                                             <List
-                                                autoHeight
+                                                autoHeight  //List的高度需要根据外面的组件的高度来调整
                                                 width={width}
                                                 height={height}
                                                 rowCount={this.state.count}
