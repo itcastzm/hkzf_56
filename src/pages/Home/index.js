@@ -8,11 +8,12 @@ import './index.css';
 
 // 导入子页面
 // 小首页
-import Index from '../Index';
+const Index = React.lazy(() => import('../Index'));
 // 找房
-import Rent from '../Rent';
-import News from '../News';
-import Profile from '../Profile';
+const Rent = React.lazy(() => import('../Rent'));
+const News = React.lazy(() => import('../News'));
+const Profile = React.lazy(() => import('../Profile'));
+
 
 const navs = [
     { title: '首页', icon: 'icon-ind', path: '/home' },
